@@ -1,36 +1,38 @@
 # 📚 通用考试练习系统 · 骨架版
+# 📚 Generic Exam Practice System · Skeleton
 
-> 一个轻量、可自定义的考试练习系统骨架。
-> 你可以用它来制作任何科目/领域的题库，在浏览器中直接练习。
-
----
-
-## ✨ 特性
-
-| 功能 | 说明 |
-|------|------|
-| **✅ 四大题型** | 选择题、填空题、简答题、判断题 — 每种题型独立文件 |
-| **🎯 练题模式** | 选择题型 → 逐题练习 → 即时反馈（对/错+解析） |
-| **📝 考试模式** | 随机抽题、限时作答、自动计时、自动评分 |
-| **📕 错题本** | 答错的题自动收录，支持重做/清空（保存在浏览器本地） |
-| **📊 统计看板** | 总做题数、正确数、错误数、正确率（进度激励） |
-| **📂 纯文件化** | 所有题目写在 `.js` 文件中，改文件即改题库 |
-| **🚫 零依赖** | 纯 HTML + CSS + JavaScript，无需安装任何东西 |
+> 🇨🇳 一个轻量、可自定义、**中英双语**的考试练习系统骨架。
+> 🇬🇧 A lightweight, customizable, **bilingual (zh/en)** exam practice system skeleton.
 
 ---
 
-## 🚀 快速开始
+## ✨ 特性 / Features
 
-### 1️⃣ 启动系统
+| 🇨🇳 中文 | 🇬🇧 English |
+|----------|-------------|
+| ✅ **四大题型**：选择/填空/简答/判断 | ✅ **4 question types**: MC, fill-blank, essay, true/false |
+| 🔤 **中英双语切换**：一键切换界面 + 题目语言 | 🔤 **Bilingual toggle**: one-click switch UI + question language |
+| 🎯 **练习模式**：选题型 → 逐题练习 → 即时反馈 | 🎯 **Practice mode**: pick type → practice → instant feedback |
+| 📝 **考试模式**：随机抽题、限时、自动评分 | 📝 **Exam mode**: random draw, timer, auto-grading |
+| 📕 **错题本**：自动收录 → 支持重做/清空 | 📕 **Wrong book**: auto-collect → replay / clear |
+| 📊 **统计面板**：做题数 / 正确率 / 进度激励 | 📊 **Stats dashboard**: total / accuracy / encouragement |
+| 📂 **纯文件化**：改 `.js` 文件 = 改题库 | 📂 **File-based**: edit `.js` files = edit question bank |
+| 🚫 **零依赖**：无需 npm / 后端 / 数据库 | 🚫 **Zero deps**: no npm, no backend, no database |
 
-直接用浏览器打开 `index.html` 即可。
+---
+
+## 🚀 快速开始 / Quick Start
+
+### 1️⃣ 启动系统 / Launch
+
+直接双击打开 `index.html`（用浏览器打开即可）。
 
 ```
 📁 exam-skeleton/
-├── index.html                 ← 主页面（双击打开）
-├── question-loader.js         ← 题库加载器（一般不需要动）
-├── README.md                  ← 本文件
-└── questions/                 ← 题库文件夹（你编辑这里）
+├── index.html                 ← 主界面（双击打开 / double-click to open）
+├── question-loader.js         ← 题库加载器（一般不用动 / rarely needs editing）
+├── README.md                  ← 本文件 / this file
+└── questions/                 ← 题库文件夹 / your question banks go here
     ├── 01-选择题.js
     ├── 02-填空题.js
     ├── 03-简答题.js
@@ -38,102 +40,126 @@
     └── 05-自定义题.js
 ```
 
-### 2️⃣ 添加你的题目
+### 2️⃣ 切换语言 / Switch Language
 
-**选择题模板**（在 `questions/01-选择题.js` 中）：
+点击右上角的 **中/EN** 按钮，整个界面 + 题目语言都会切换。
+
+Click the **中/EN** button in the top-right corner to switch the entire UI and question content.
+
+---
+
+## 📝 添加题目 / Adding Questions
+
+### 选择题 / Multiple Choice
+
 ```javascript
 {
-  id: "mc-101",                             // 唯一ID（不要重复）
-  question: "1+1等于几？",                    // 题目
-  options: ["A. 1", "B. 2", "C. 3", "D. 4"], // 选项
-  answer: "B"                                // 正确答案（字母）
+  id: "mc-101",
+  question: "1+1等于几？",                              // 中文题目
+  questionEn: "What is 1+1?",                            // English question
+  options: ["1", "2", "3", "4"],                         // 中文选项
+  optionsEn: ["1", "2", "3", "4"],                       // English options
+  answer: "B",                                            // 正确答案（字母）
+  answerEn: "B"                                           // English answer
 }
 ```
 
-**填空题模板**（在 `questions/02-填空题.js` 中）：
+### 填空题 / Fill-in-the-blank
+
 ```javascript
 {
   id: "fb-101",
-  question: "CSS 中用来设置字体颜色的属性是______。",  // 用 ______ 表示空
-  answer: "color"                                     // 答案
+  question: "CSS中设置字体颜色的属性是______。",
+  questionEn: "The CSS property for text color is ______.",
+  answer: "color",              // 答案
+  answerEn: "color"             // English answer
 }
 ```
 
-**简答题模板**（在 `questions/03-简答题.js` 中）：
+### 简答题 / Essay
+
 ```javascript
 {
   id: "ess-101",
-  question: "请简述 MVC 架构模式。",   // 题目
-  answer: "MVC 是……（参考答案）"       // 参考解析
+  question: "请简述MVC架构。",
+  questionEn: "Briefly describe the MVC architecture.",
+  answer: "MVC是…（参考解答）",
+  answerEn: "MVC is… (reference answer)"
 }
 ```
 
-**判断题模板**（在 `questions/04-判断题.js` 中）：
+### 判断题 / True or False
+
 ```javascript
 {
   id: "tf-101",
-  question: "HTML 是一种编程语言。",    // 陈述句
-  options: ["正确", "错误"],           // 固定选项
-  answer: "B"                         // A=正确, B=错误
+  question: "HTML是一种编程语言。",
+  questionEn: "HTML is a programming language.",
+  options: ["正确", "错误"],
+  optionsEn: ["True", "False"],
+  answer: "B",          // A=正确/True, B=错误/False
+  answerEn: "B"
 }
 ```
 
-> 💡 **技巧**：你可以直接修改现有模板里的示例题目，也可以复制粘贴后改成你自己的内容。
+> 💡 **提示 / Tips**：
+> - 可以只提供中文（不加 `En` 字段），英文模式下会回退显示中文
+> - 可以只提供英文（不加中文 `question` 字段），中文模式下会回退显示英文
+> - You can provide only Chinese (omit `En` fields) — English mode falls back to Chinese text
+> - You can provide only English — Chinese mode falls back to English text
 
-### 3️⃣ 新增一个题型
+### 新增题型 / Adding a New Question Type
 
-1. 在 `questions/` 下新建文件，比如 `06-代码题.js`
-2. 按模板格式写题目，末尾写 `window.registerQuestions('代码题', questions);`
-3. 打开 `question-loader.js`，在 `QUESTION_FILES` 数组末尾加一行：
+1. 在 `questions/` 下新建文件，如 `06-代码题.js`
+2. 按格式写题目，末尾加 `window.registerQuestions('题型名', questions);`
+3. 打开 `question-loader.js`，在 `QUESTION_FILES` 末尾加一行：
    ```javascript
    'questions/06-代码题.js'
    ```
-4. 保存，刷新页面即可
-
-### 4️⃣ 删除一个题型
-
-- **方法A**：删掉对应的 `.js` 文件
-- **方法B**：在 `question-loader.js` 的 `QUESTION_FILES` 中注释/删除对应行
+4. 保存，刷新页面
 
 ---
 
-## 🧠 支持的题型一览
+## 🧠 题型对照 / Question Type Reference
 
-| 题型 | 格式 | 考试模式支持 |
-|------|------|:----------:|
-| 选择题 | `options: ["A","B","C","D"]`, `answer: "A"` | ✅ |
-| 填空题 | `answer: "答案"` | ✅ |
-| 简答题 | `answer: "参考答案"` | ✅ |
-| 判断题 | `options: ["正确","错误"]`, `answer: "A"/"B"` | ✅ |
-| 自定义 | 任意 `options` | ✅ |
+| 题型 Type | 字段 Fields | 考试模式 Exam |
+|-----------|------------|:-------------:|
+| 选择题 / MC | `options`, `answer` | ✅ |
+| 填空题 / Fill | `answer` | ✅ |
+| 简答题 / Essay | `answer` | ✅ |
+| 判断题 / T/F | `options: ["正确/True","错误/False"]`, `answer` | ✅ |
+| 自定义 / Custom | 任意 `options` | ✅ |
 
 ---
 
-## 🛠️ 技术栈
+## 🛠️ 技术栈 / Tech Stack
 
 - **前端**：纯 HTML5 + CSS3 + JavaScript（ES5/ES6）
-- **存储**：localStorage（错题本、统计数据保存在浏览器本地）
-- **依赖**：无（不需要 npm / node / 后端）
+- **存储**：localStorage（错题本/统计数据保存在浏览器本地）
+- **依赖**：无
+- **Frontend**: Pure HTML5 + CSS3 + JavaScript
+- **Storage**: localStorage (wrong book & stats saved locally)
+- **Dependencies**: None
 
 ---
 
-## 📁 文件结构
+## 📁 文件结构 / File Structure
 
 ```
 exam-skeleton/
-├── index.html                  # 主界面（练题/考试/错题/统计）
-├── question-loader.js          # 加载 questions/ 下所有题库文件
-├── README.md                   # 使用说明
-└── questions/                  # ── 题库目录（你编辑这里）──
-    ├── 01-选择题.js              # 选择题题库
-    ├── 02-填空题.js              # 填空题题库
-    ├── 03-简答题.js              # 简答题题库
-    ├── 04-判断题.js              # 判断题题库
-    └── 05-自定义题.js            # 自定义题型
+├── index.html                  # 主界面（含完整 i18n 中英双语）
+├── question-loader.js          # 题库加载器（支持中英双语字段）
+├── README.md                   # 使用说明（中英双语）
+└── questions/                  # 题库目录
+    ├── 01-选择题.js              # 选择题 / Multiple Choice
+    ├── 02-填空题.js              # 填空题 / Fill-in-the-blank
+    ├── 03-简答题.js              # 简答题 / Essay
+    ├── 04-判断题.js              # 判断题 / True or False
+    └── 05-自定义题.js            # 自定义 / Custom
 ```
 
 ---
 
 ## 📝 License
 
-MIT — 随意使用、修改、分享
+MIT — 随意使用、修改、分享 / Free to use, modify, share

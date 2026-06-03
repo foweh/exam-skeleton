@@ -1,38 +1,42 @@
-// ===== 📝 选择题题库 =====
-// 编辑本文件即可增删题目，系统会自动加载
-// 复制下面模板，替换内容即可
+// ===== 📝 选择题 / Multiple Choice =====
+// 中英双语题库 | Bilingual question bank
+// question / questionEn, options / optionsEn, answer / answerEn
 
 (function() {
   const questions = [
-    // ── ✏️ 模板：选择题（4个选项） ──
+    // ── English only (no zh equivalent) ──
     {
       id: "mc-001",
       question: "以下哪一项不是算法的基本特性？",
+      questionEn: "Which of the following is NOT a basic property of algorithms?",
       options: ["有穷性", "确定性", "高效性", "可行性"],
-      answer: "C"
+      optionsEn: ["Finiteness", "Definiteness", "Efficiency", "Feasibility"],
+      answer: "C",
+      answerEn: "C"
     },
     {
       id: "mc-002",
       question: "程序是算法用某种程序设计语言的（ ）。",
+      questionEn: "A program is the ( ) of an algorithm in a programming language.",
       options: ["具体实现", "设计思路", "伪代码", "流程图"],
-      answer: "A"
+      optionsEn: ["concrete implementation", "design idea", "pseudo-code", "flowchart"],
+      answer: "A",
+      answerEn: "A"
     },
     {
       id: "mc-003",
       question: "下列哪种排序算法在最坏情况下的时间复杂度最低？",
+      questionEn: "Which sorting algorithm has the lowest worst-case time complexity?",
       options: ["冒泡排序", "插入排序", "归并排序", "快速排序"],
-      answer: "C"
+      optionsEn: ["Bubble sort", "Insertion sort", "Merge sort", "Quick sort"],
+      answer: "C",
+      answerEn: "C"
     }
   ];
   window.registerQuestions('选择题', questions);
 })();
 
-// ── 怎么加新题？ ──
-// 1. 复制一份上面的 { id: "...", ... } 对象（从 { 到 },）
-// 2. 粘贴到 questions 数组里
-// 3. 修改内容：
-//    - id:     唯一标识，建议 "mc-编号"（编号不要重复）
-//    - question: 题目文本
-//    - options:  选项数组，最少2个、最多6个
-//    - answer:   正确答案对应的字母（从A开始数）
-// 4. 保存文件，刷新页面即可生效
+// ── How to add questions? ──
+// Copy a { ... } block above, paste below, change fields.
+// For English-only or Chinese-only: omit the other language field.
+// Required: id, question, answer (options for MC / True-False only).

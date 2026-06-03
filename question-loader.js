@@ -6,16 +6,24 @@
  *    🔹 在 questions/ 下新建 .js 文件，按下方格式写题目，系统自动加载
  *    🔹 删掉某个 .js 文件 = 删掉那一类题
  *    🔹 编辑 .js 文件 = 增删改题目
- *    🔹 支持题型：选择题、填空题、简答题、判断题、代码题
+ *    🔹 支持题型：选择题、填空题、简答题、判断题
+ *    🔹 支持中英双语：字段加 En 后缀即可 (questionEn, optionsEn, answerEn)
  *
  *  【每个题库文件格式】
  *    (function() {
  *      const questions = [
- *        { id: "xxx", question: "题目内容", options: ["A","B","C","D"], answer: "A" },
- *        // 或 { id: "xxx", question: "题目内容", answer: "答案" }  （填空题/简答题）
- *        // 或 { id: "xxx", question: "题目内容", options: ["A","B"], answer: "A", isJudge: true }  （判断题）
+ *        // 中文（默认）
+ *        { id: "mc-001", question: "题目内容", options: ["A","B","C","D"], answer: "A" },
+ *        // 中英双语（可只提供中文，En 字段可选）
+ *        { id: "mc-002",
+ *          question: "中文题目",    questionEn: "English question",
+ *          options: ["A选项","B选项"], optionsEn: ["Option A","Option B"],
+ *          answer: "A",             answerEn: "A"
+ *        },
+ *        // 填空题/简答题（无需 options）
+ *        { id: "fb-001", question: "题目______", questionEn: "Fill ______", answer: "答案", answerEn: "answer" }
  *      ];
- *      window.registerQuestions && window.registerQuestions('题型名', questions);
+ *      window.registerQuestions('题型名', questions);
  *    })();
  *
  *  【增加新的题型文件】
@@ -34,11 +42,14 @@
   window.registerQuestions = function(typeName, questions) {
     if (!Array.isArray(questions) || questions.length === 0) return;
     if (!rawBank[typeName]) rawBank[typeName] = [];
-    // 用 Set 以 question 文本去重（同一个题库文件内部）
-    const seen = new Set(rawBank[typeName].map(q => q.question));
+    // 用 Set 以 question 文本去重（双语均检查）
+    const seenZh = new Set(rawBank[typeName].map(q => q.question));
+    const seenEn = new Set(rawBank[typeName].map(q => q.questionEn).filter(Boolean));
     questions.forEach(q => {
-      if (!seen.has(q.question)) {
-        seen.add(q.question);
+      // 同一题库文件内部不重复（中文或英文任意一个匹配即跳过）
+      if (!seenZh.has(q.question) && !seenEn.has(q.questionEn)) {
+        seenZh.add(q.question);
+        if (q.questionEn) seenEn.add(q.questionEn);
         rawBank[typeName].push(q);
       }
     });
@@ -123,20 +134,33 @@
       return (rawBank[typeName] || []).length;
     },
 
-    /** 从指定题型随机抽取 n 道题（去重不重复） */
+    /** 从指定题型随机抽取 n 道题 */
     getRandomQuestions: function(typeName, n) {
       var pool = (rawBank[typeName] || []).slice();
-      // Fisher–Yates 洗牌
       for (var i = pool.length - 1; i > 0; i--) {
         var j = Math.floor(Math.random() * (i + 1));
-        var tmp = pool[i];
-        pool[i] = pool[j];
-        pool[j] = tmp;
+        var tmp = pool[i]; pool[i] = pool[j]; pool[j] = tmp;
       }
       return pool.slice(0, Math.min(n, pool.length));
     },
 
-    /** 原始数据（直接操作） */
+    /**
+     * 根据当前语言获取题目的本地化字段
+     * @param {Object} q        题目对象
+     * @param {string} field    字段名，如 "question" / "options" / "answer"
+     * @param {string} [lang]   语言 "zh" 或 "en"，默认 window.__lang
+     * @returns 本地化值
+     */
+    getLocalized: function(q, field, lang) {
+      lang = lang || (window.__lang || 'zh');
+      if (lang === 'en') {
+        var enField = field + 'En';
+        if (q[enField] !== undefined && q[enField] !== null) return q[enField];
+      }
+      return q[field];
+    },
+
+    /** 原始数据 */
     _raw: rawBank
   };
 
@@ -144,11 +168,9 @@
   //  6. 启动：加载完毕后触发 window.onQuestionsLoaded
   // ==========================================================
   loadAllQuestions(function(bank) {
-    // 触发页面初始化
     if (typeof window.onQuestionsLoaded === 'function') {
       window.onQuestionsLoaded(bank);
     }
-    // 派发自定义事件（备用）
     var evt = new CustomEvent('questionsLoaded', { detail: { bank: bank } });
     document.dispatchEvent(evt);
   });
